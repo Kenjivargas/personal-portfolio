@@ -10,6 +10,7 @@ import { usePortfolioData } from '../hooks/usePortfolioData.js'
 import ProjectsSection from '../../projects/pages/ProjectsSection.jsx'
 import ContactSection from '../../contact/pages/ContactSection.jsx'
 import CommandPalette from '../../../shared/components/CommandPalette.jsx'
+import AnimatedGridBackground from '../../../shared/components/AnimatedGridBackground.jsx'
 import { ToastProvider } from '../../../shared/context/ToastContext.jsx'
 
 export default function HomePage({ theme, onToggleTheme }) {
@@ -30,6 +31,7 @@ export default function HomePage({ theme, onToggleTheme }) {
 
   return (
     <ToastProvider>
+      <AnimatedGridBackground />
       <a className="skip-link" href="#main">Skip to content</a>
       <Navigation
         theme={theme}

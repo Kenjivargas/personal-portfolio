@@ -1039,3 +1039,105 @@ dialog::backdrop {
   outline: none;
 }
 
+/* ==========================================================================
+   Animated Engineering Grid & Dot Matrix Background (Option 1)
+   ========================================================================== */
+
+:root {
+  --grid-line-color: rgba(0, 0, 0, 0.05);
+  --grid-dot-color: rgba(0, 0, 0, 0.12);
+  --grid-beam-glow: rgba(0, 0, 0, 0.035);
+  --grid-spotlight-glow: rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme='dark'] {
+  --grid-line-color: rgba(255, 255, 255, 0.038);
+  --grid-dot-color: rgba(255, 255, 255, 0.14);
+  --grid-beam-glow: rgba(255, 255, 255, 0.045);
+  --grid-spotlight-glow: rgba(255, 255, 255, 0.07);
+}
+
+.animated-grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+
+/* Layer 1: Blueprint Grid Lines */
+.animated-grid-bg__grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, black 40%, transparent 95%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, black 40%, transparent 95%);
+}
+
+/* Layer 2: Dot Matrix Cross-points */
+.animated-grid-bg__dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--grid-dot-color) 1.25px, transparent 1.25px);
+  background-size: 52px 52px;
+  background-position: -1px -1px;
+  opacity: 0.85;
+}
+
+/* Layer 3: Slowly Drifting Ambient Light Beam */
+.animated-grid-bg__beam {
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(ellipse 55% 45% at 50% 45%, var(--grid-beam-glow), transparent 65%);
+  animation: beam-drift 24s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  will-change: transform;
+}
+
+@keyframes beam-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6vw, 12vh, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(-6vw, -8vh, 0) scale(0.95);
+  }
+}
+
+/* Layer 4: Interactive Mouse Spotlight */
+.animated-grid-bg__spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 540px at var(--cursor-x, 50vw) var(--cursor-y, 30vh),
+    var(--grid-spotlight-glow),
+    transparent 75%
+  );
+  transition: opacity var(--motion-base) ease;
+}
+
+/* Layer 5: Edge Vignette */
+.animated-grid-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 40%, var(--background) 98%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-grid-bg__beam {
+    animation: none !important;
+  }
+  .animated-grid-bg__spotlight {
+    display: none !important;
+  }
+}
+
+
