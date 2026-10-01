@@ -1048,14 +1048,12 @@ dialog::backdrop {
   --grid-line-color: rgba(0, 0, 0, 0.075);
   --grid-dot-color: rgba(0, 0, 0, 0.22);
   --grid-beam-glow: rgba(0, 0, 0, 0.055);
-  --grid-spotlight-glow: rgba(0, 0, 0, 0.065);
 }
 
 :root[data-theme='dark'] {
   --grid-line-color: rgba(255, 255, 255, 0.075);
   --grid-dot-color: rgba(255, 255, 255, 0.26);
   --grid-beam-glow: rgba(255, 255, 255, 0.08);
-  --grid-spotlight-glow: rgba(255, 255, 255, 0.11);
 }
 
 .animated-grid-bg {
@@ -1109,30 +1107,48 @@ dialog::backdrop {
   }
 }
 
-/* Layer 4: Interactive Mouse Spotlight */
-.animated-grid-bg__spotlight {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle 500px at var(--cursor-x, 50vw) var(--cursor-y, 30vh),
-    var(--grid-spotlight-glow),
-    transparent 70%
-  );
-}
-
-/* Layer 5: Edge Vignette */
+/* Layer 4: Edge Vignette */
 .animated-grid-bg__vignette {
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse at 50% 50%, transparent 60%, var(--background) 100%);
 }
 
+/* Card-Level Interactive Spotlight Glow (Option 2) */
+.project-card {
+  position: relative;
+}
+
+.project-card__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--motion-base) ease;
+  background: radial-gradient(
+    340px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.08),
+    transparent 70%
+  );
+  z-index: 1;
+}
+
+:root[data-theme='light'] .project-card__glow {
+  background: radial-gradient(
+    340px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 0, 0, 0.045),
+    transparent 70%
+  );
+}
+
+.project-card:hover .project-card__glow {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animated-grid-bg__beam {
     animation: none !important;
-  }
-  .animated-grid-bg__spotlight {
-    display: none !important;
   }
 }
 

@@ -30,6 +30,8 @@ export default function ProjectCard({ project, index, onOpenModal, onSelectTech 
     const rotateY = ((x - centerX) / centerX) * 4
 
     cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`
+    cardRef.current.style.setProperty('--mouse-x', `${x}px`)
+    cardRef.current.style.setProperty('--mouse-y', `${y}px`)
   }
 
   const handleMouseLeave = () => {
@@ -48,6 +50,7 @@ export default function ProjectCard({ project, index, onOpenModal, onSelectTech 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      <div className="project-card__glow" aria-hidden="true" />
       <div className="project-card__visual">
         {hasCover ? (
           <img
