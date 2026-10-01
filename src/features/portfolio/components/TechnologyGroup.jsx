@@ -1,40 +1,17 @@
 import Card from '../../../shared/components/ui/Card.jsx'
-import { useToast } from '../../../shared/context/useToast.js'
 
-function scrollToSection(id) {
-  const target = document.getElementById(id)
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' })
-  }
-}
-
-export default function TechnologyGroup({ category }) {
-  const { showToast } = useToast()
-
-  const handleTechClick = (techName) => {
-    scrollToSection('projects')
-    showToast(`Jumped to projects. Filter for: ${techName}`)
-  }
-
+export default function TechnologyGroup({ category, index }) {
   return (
-    <Card className="technology-group">
+    <Card className="technology-group" style={{ '--i': index }}>
       <div className="technology-group__heading">
-        <span className="technology-group__glyph" aria-hidden="true">✳</span>
         <h3>{category.name}</h3>
+        <span className="technology-group__count">{String(category.technologies.length).padStart(2, '0')}</span>
       </div>
-      <div className="technology-group__list">
+      <ul className="technology-group__list">
         {category.technologies.map((technology) => (
-          <button
-            key={technology.technology_id}
-            type="button"
-            className="badge badge--interactive"
-            onClick={() => handleTechClick(technology.name)}
-            title={`Jump to projects using ${technology.name}`}
-          >
-            {technology.name}
-          </button>
+          <li key={technology.technology_id}>{technology.name}</li>
         ))}
-      </div>
+      </ul>
     </Card>
   )
 }

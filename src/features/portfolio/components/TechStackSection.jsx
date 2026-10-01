@@ -9,11 +9,16 @@ export default function TechStackSection({ resource }) {
   return (
     <Section
       id="stack"
-      eyebrow="02 / THE TOOLKIT"
-      title="Technologies in practice."
-      description="A focused view of technologies used across projects, grouped by discipline."
+      index="02"
+      eyebrow="Stack"
+      title="Tools I work with"
+      description="Grouped by where they sit in a system. Everything here has been used in a real project."
     >
-      {status === 'loading' && <p className="state-note" role="status">Loading technologies…</p>}
+      {status === 'loading' && (
+        <div className="technology-grid" aria-busy="true">
+          {[0, 1, 2, 3].map((n) => <div key={n} className="skeleton skeleton--tile" />)}
+        </div>
+      )}
       {status === 'error' && (
         <Card className="empty-state" role="alert">
           <p>Technologies could not be loaded right now.</p>
@@ -21,11 +26,11 @@ export default function TechStackSection({ resource }) {
         </Card>
       )}
       {status === 'success' && data.length === 0 && (
-        <Card className="empty-state"><p>Verified technologies will appear here as they are published.</p></Card>
+        <Card className="empty-state"><p>Technologies will appear here once they're published.</p></Card>
       )}
       {status === 'success' && data.length > 0 && (
         <div className="technology-grid">
-          {data.map((category) => <TechnologyGroup key={category.category_id} category={category} />)}
+          {data.map((category, i) => <TechnologyGroup key={category.category_id} category={category} index={i} />)}
         </div>
       )}
     </Section>

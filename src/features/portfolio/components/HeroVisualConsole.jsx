@@ -1,187 +1,116 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+
+const tabs = [
+  { id: 'terminal', label: 'Terminal' },
+  { id: 'architecture', label: 'Architecture' },
+  { id: 'workflow', label: 'Workflow' },
+]
+
+const quickCommands = [
+  ['kenji.stack', 'React 19 · Laravel · PostgreSQL · Supabase · REST APIs · RBAC'],
+  ['kenji.featured', 'ISMERS: integrated school management & resource system'],
+  ['kenji.focus', 'Full-stack systems with dependable data models'],
+]
+
+const layers = [
+  { badge: 'Presentation', title: 'React 19 & Vite', detail: 'Design tokens, accessible primitives, mobile-first layouts', flow: 'REST & JSON' },
+  { badge: 'Services', title: 'Laravel API', detail: 'Role-based access control, workflow logic, validation', flow: 'SQL & row-level security' },
+  { badge: 'Data', title: 'PostgreSQL & Supabase', detail: 'Normalized schemas, RLS policies, referential integrity' },
+]
+
+const steps = [
+  ['01', 'Understand & model', 'Map requirements, data entities and security boundaries before writing code.'],
+  ['02', 'Build in slices', 'Feature-based modules, reusable UI tokens, server-side RBAC and predictable state.'],
+  ['03', 'Verify', 'Linting, edge-case checks, responsive testing and performance profiling.'],
+]
 
 export default function HeroVisualConsole() {
   const [activeTab, setActiveTab] = useState('terminal')
   const [terminalHistory, setTerminalHistory] = useState([
-    { cmd: 'kenji.init()', output: 'System initialized. Full-stack profile loaded.' },
-    { cmd: 'kenji.status', output: 'Ready for full-stack engineering & system development.' },
+    { cmd: 'kenji.init()', output: 'Profile loaded. 3 projects, 1 featured.' },
   ])
-  const cardRef = useRef(null)
 
-  const runCommand = (cmdName, outputText) => {
-    setTerminalHistory((prev) => [...prev, { cmd: cmdName, output: outputText }].slice(-6))
-  }
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    cardRef.current.style.setProperty('--mouse-x', `${x}px`)
-    cardRef.current.style.setProperty('--mouse-y', `${y}px`)
+  const runCommand = (cmd, output) => {
+    setTerminalHistory((prev) => [...prev, { cmd, output }].slice(-4))
   }
 
   return (
-    <div
-      ref={cardRef}
-      className="hero-console"
-      onMouseMove={handleMouseMove}
-      aria-label="Interactive Developer Console and System Architecture"
-    >
-      <div className="hero-console__glow" aria-hidden="true" />
-
-      {/* Top Header */}
+    <div className="hero-console" aria-label="Interactive developer console">
       <div className="hero-console__top">
         <div className="hero-console__dots" aria-hidden="true">
           <span />
           <span />
           <span />
         </div>
-        <div className="hero-console__title">
-          <span>SYSTEM_CONSOLE //</span> <strong>KENJI.VARGAS</strong>
-        </div>
-        <div className="hero-console__status">
-          <span className="hero-console__pulse" aria-hidden="true" />
-          <span>OPEN TO WORK</span>
-        </div>
+        <p className="hero-console__title">kenji — ~/portfolio</p>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="hero-console__tabs" role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'terminal'}
-          className={`hero-console__tab ${activeTab === 'terminal' ? 'hero-console__tab--active' : ''}`}
-          onClick={() => setActiveTab('terminal')}
-        >
-          <span className="tab-icon">❯_</span> Terminal
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'architecture'}
-          className={`hero-console__tab ${activeTab === 'architecture' ? 'hero-console__tab--active' : ''}`}
-          onClick={() => setActiveTab('architecture')}
-        >
-          <span className="tab-icon">⛯</span> Architecture
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'workflow'}
-          className={`hero-console__tab ${activeTab === 'workflow' ? 'hero-console__tab--active' : ''}`}
-          onClick={() => setActiveTab('workflow')}
-        >
-          <span className="tab-icon">✦</span> Workflow
-        </button>
+      <div className="hero-console__tabs" role="tablist" aria-label="Console views">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            className="hero-console__tab"
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* Content Area */}
-      <div className="hero-console__body">
+      <div className="hero-console__body" key={activeTab}>
         {activeTab === 'terminal' && (
           <div className="hero-console__terminal">
-            <div className="terminal-logs">
+            <div className="terminal-logs" aria-live="polite">
               {terminalHistory.map((item, i) => (
                 <div key={i} className="terminal-log-entry">
-                  <p className="terminal-cmd">
-                    <span className="prompt-symbol">kv@sys:~$</span> {item.cmd}
-                  </p>
+                  <p className="terminal-cmd"><span className="prompt-symbol">$</span> {item.cmd}</p>
                   <p className="terminal-out">{item.output}</p>
                 </div>
               ))}
-            </div>
-
-            <div className="terminal-input-row" aria-hidden="true">
-              <span className="prompt-symbol">kv@sys:~$</span>
-              <span className="terminal-cursor">_</span>
+              <p className="terminal-cmd" aria-hidden="true">
+                <span className="prompt-symbol">$</span> <span className="terminal-cursor" />
+              </p>
             </div>
 
             <div className="terminal-actions">
-              <span className="terminal-actions__label">Quick commands:</span>
-              <div className="terminal-actions__buttons">
-                <button
-                  type="button"
-                  onClick={() => runCommand('kenji.stack', 'React 19 • Laravel • PostgreSQL • Supabase • REST APIs • RBAC')}
-                >
-                  kenji.stack
-                </button>
-                <button
-                  type="button"
-                  onClick={() => runCommand('kenji.featured', 'Flagship: ISMERS (Enterprise School & Resource System)')}
-                >
-                  kenji.featured
-                </button>
-                <button
-                  type="button"
-                  onClick={() => runCommand('kenji.focus', 'Building robust full-stack systems with reliable database models')}
-                >
-                  kenji.focus
-                </button>
-              </div>
+              {quickCommands.map(([cmd, output]) => (
+                <button key={cmd} type="button" onClick={() => runCommand(cmd, output)}>{cmd}</button>
+              ))}
             </div>
           </div>
         )}
 
         {activeTab === 'architecture' && (
           <div className="hero-console__architecture">
-            <div className="arch-layer">
-              <div className="arch-layer__badge">PRESENTATION LAYER</div>
-              <div className="arch-layer__content">
-                <strong>React 19 & Vite</strong>
-                <span>Monochrome Tokens • Accessible Primitives • Mobile-First</span>
+            {layers.map((layer) => (
+              <div key={layer.badge} className="arch-step">
+                <div className="arch-layer">
+                  <span className="arch-layer__badge">{layer.badge}</span>
+                  <strong>{layer.title}</strong>
+                  <span className="arch-layer__detail">{layer.detail}</span>
+                </div>
+                {layer.flow && <p className="arch-flow" aria-hidden="true">{layer.flow}</p>}
               </div>
-            </div>
-            <div className="arch-flow-arrow" aria-hidden="true">↓ REST APIs & JSON</div>
-            <div className="arch-layer">
-              <div className="arch-layer__badge">BUSINESS & SERVICE LAYER</div>
-              <div className="arch-layer__content">
-                <strong>Laravel / Headless API Services</strong>
-                <span>Role-Based Access Control • Workflow Engines • Verification Loops</span>
-              </div>
-            </div>
-            <div className="arch-flow-arrow" aria-hidden="true">↓ RLS & SQL Transactions</div>
-            <div className="arch-layer">
-              <div className="arch-layer__badge">DATA & STORAGE LAYER</div>
-              <div className="arch-layer__content">
-                <strong>PostgreSQL & Supabase</strong>
-                <span>Normalized Schemas (3NF) • Row Level Security • Referential Integrity</span>
-              </div>
-            </div>
+            ))}
           </div>
         )}
 
         {activeTab === 'workflow' && (
-          <div className="hero-console__workflow">
-            <div className="workflow-step">
-              <span className="workflow-step__num">01</span>
-              <div>
-                <strong>Understand & Model</strong>
-                <p>Map functional requirements, data entities, normalization, and security boundaries first.</p>
-              </div>
-            </div>
-            <div className="workflow-step">
-              <span className="workflow-step__num">02</span>
-              <div>
-                <strong>Build with Discipline</strong>
-                <p>Clean feature slices, reusable UI tokens, robust server-side RBAC, and predictable state.</p>
-              </div>
-            </div>
-            <div className="workflow-step">
-              <span className="workflow-step__num">03</span>
-              <div>
-                <strong>Verify & Optimize</strong>
-                <p>Strict linting, automated edge-case validation, responsive testing, and performance profiling.</p>
-              </div>
-            </div>
-          </div>
+          <ol className="hero-console__workflow">
+            {steps.map(([num, title, text]) => (
+              <li key={num} className="workflow-step">
+                <span className="workflow-step__num">{num}</span>
+                <div>
+                  <strong>{title}</strong>
+                  <p>{text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         )}
-      </div>
-
-      {/* Footer Info */}
-      <div className="hero-console__foot">
-        <span>Engineered with React 19 & PostgreSQL</span>
-        <a href="#projects" className="hero-console__cta">Explore Work ↗</a>
       </div>
     </div>
   )

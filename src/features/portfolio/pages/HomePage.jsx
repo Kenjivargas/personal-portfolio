@@ -5,12 +5,13 @@ import HeroSection from '../components/HeroSection.jsx'
 import TechStackSection from '../components/TechStackSection.jsx'
 import AboutSection from '../components/AboutSection.jsx'
 import ExperienceSection from '../components/ExperienceSection.jsx'
-import EducationSection from '../components/EducationSection.jsx'
 import { usePortfolioData } from '../hooks/usePortfolioData.js'
 import ProjectsSection from '../../projects/pages/ProjectsSection.jsx'
 import ContactSection from '../../contact/pages/ContactSection.jsx'
 import CommandPalette from '../../../shared/components/CommandPalette.jsx'
 import AnimatedGridBackground from '../../../shared/components/AnimatedGridBackground.jsx'
+import BackToTop from '../../../shared/components/BackToTop.jsx'
+import TechMarquee from '../components/TechMarquee.jsx'
 import { ToastProvider } from '../../../shared/context/ToastContext.jsx'
 
 export default function HomePage({ theme, onToggleTheme }) {
@@ -39,23 +40,18 @@ export default function HomePage({ theme, onToggleTheme }) {
         onOpenCommandPalette={() => setIsCommandOpen(true)}
       />
       <main id="main">
-        <HeroSection
-          profile={profile.data}
-          profileStatus={profile.status}
-          onOpenCommandPalette={() => setIsCommandOpen(true)}
-        />
+        <HeroSection profile={profile.data} profileStatus={profile.status} />
+        <TechMarquee />
         <div className="container main-sections">
           <ProjectsSection />
           <TechStackSection resource={technologyStack} />
           <AboutSection profile={profile.data} profileStatus={profile.status} retry={profile.retry} />
-          <div className="background-grid">
-            <ExperienceSection />
-            <EducationSection />
-          </div>
+          <ExperienceSection />
           <ContactSection />
         </div>
       </main>
       <Footer />
+      <BackToTop />
 
       <CommandPalette
         isOpen={isCommandOpen}

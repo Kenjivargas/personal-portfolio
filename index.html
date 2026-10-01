@@ -3,21 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Kenji Vargas — Full-Stack Developer building practical web systems. Explore verified projects (including ISMERS), technologies, and engineering background." />
     <meta name="author" content="Kenji Vargas" />
-    <meta name="theme-color" content="#f5f5f5" />
+    <meta name="theme-color" content="#f7f7f5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Kenji Vargas — Full-Stack Developer" />
     <meta property="og:description" content="Full-Stack Developer building practical web systems with React 19, Laravel, and PostgreSQL. Explore verified projects and architecture." />
     <meta property="og:site_name" content="Kenji Vargas Portfolio" />
-    
+    <meta property="og:url" content="https://kenjivargas.vercel.app/" />
+    <meta property="og:image" content="https://kenjivargas.vercel.app/KenjiVargasPreview.png" />
+    <meta property="og:image:secure_url" content="https://kenjivargas.vercel.app/KenjiVargasPreview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1885" />
+    <meta property="og:image:height" content="914" />
+    <meta property="og:image:alt" content="Kenji Vargas — Full-Stack Developer portfolio preview" />
+    <link rel="canonical" href="https://kenjivargas.vercel.app/" />
+
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Kenji Vargas — Full-Stack Developer" />
     <meta name="twitter:description" content="Full-Stack Developer building practical web systems with React 19, Laravel, and PostgreSQL." />
+    <meta name="twitter:image" content="https://kenjivargas.vercel.app/KenjiVargasPreview.png" />
+    <meta name="twitter:image:alt" content="Kenji Vargas — Full-Stack Developer portfolio preview" />
 
     <!-- Structured Data (JSON-LD) for Search Engines -->
     <script type="application/ld+json">
@@ -54,7 +67,7 @@
           ? saved
           : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
         document.documentElement.dataset.theme = theme
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#101010' : '#f5f5f5')
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#0b0b0c' : '#f7f7f5')
       })()
     </script>
   </head>

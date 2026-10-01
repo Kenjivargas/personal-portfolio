@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { useToast } from '../context/useToast.js'
+import Icon from './ui/Icon.jsx'
 
 function scrollToSection(id) {
   const target = document.getElementById(id)
@@ -24,30 +25,29 @@ export default function CommandPalette({ isOpen, onClose, onToggleTheme }) {
     })
   }
 
+  const go = (id) => () => { scrollToSection(id); handleClose() }
+  const openExternal = (url) => () => {
+    window.open(url, '_blank', 'noopener,noreferrer')
+    handleClose()
+  }
+
   const commands = [
-    { id: 'proj', title: 'Jump to Projects', category: 'Navigation', icon: '↗', action: () => { scrollToSection('projects'); handleClose() } },
-    { id: 'stack', title: 'Jump to Tech Stack', category: 'Navigation', icon: '⚡', action: () => { scrollToSection('stack'); handleClose() } },
-    { id: 'about', title: 'Jump to About Me', category: 'Navigation', icon: '✦', action: () => { scrollToSection('about'); handleClose() } },
-    { id: 'exp', title: 'Jump to Experience & Journey', category: 'Navigation', icon: '⏱', action: () => { scrollToSection('experience'); handleClose() } },
-    { id: 'contact', title: 'Jump to Contact', category: 'Navigation', icon: '✉', action: () => { scrollToSection('contact'); handleClose() } },
-    { id: 'copy-email', title: 'Copy Email Address (kenjivargas.dev@gmail.com)', category: 'Quick Action', icon: '📋', action: () => {
-      navigator.clipboard.writeText('kenjivargas.dev@gmail.com')
-      showToast('Email address copied to clipboard!')
+    { id: 'proj', title: 'Selected work', category: 'Go to', action: go('projects') },
+    { id: 'stack', title: 'Stack', category: 'Go to', action: go('stack') },
+    { id: 'about', title: 'About', category: 'Go to', action: go('about') },
+    { id: 'exp', title: 'Experience & education', category: 'Go to', action: go('experience') },
+    { id: 'contact', title: 'Contact', category: 'Go to', action: go('contact') },
+    { id: 'copy-email', title: 'Copy email address', category: 'Actions', action: () => {
+      navigator.clipboard?.writeText('kenjivargas.dev@gmail.com')
+      showToast('Email copied')
       handleClose()
     }},
-    { id: 'toggle-theme', title: 'Toggle Theme (Light / Dark)', category: 'Preferences', icon: '◑', action: () => {
+    { id: 'toggle-theme', title: 'Toggle light / dark theme', category: 'Actions', action: () => {
+      handleClose()
       onToggleTheme?.()
-      showToast('Theme updated!')
-      handleClose()
     }},
-    { id: 'github', title: 'View GitHub Profile (@kenjivargas)', category: 'External', icon: '↗', action: () => {
-      window.open('https://github.com/kenjivargas', '_blank', 'noopener,noreferrer')
-      handleClose()
-    }},
-    { id: 'linkedin', title: 'Connect on LinkedIn', category: 'External', icon: '↗', action: () => {
-      window.open('https://linkedin.com/in/kenjivargas', '_blank', 'noopener,noreferrer')
-      handleClose()
-    }},
+    { id: 'github', title: 'GitHub', category: 'Links', action: openExternal('https://github.com/kenjivargas') },
+    { id: 'linkedin', title: 'LinkedIn', category: 'Links', action: openExternal('https://linkedin.com/in/kenjivargas') },
   ]
 
   const filteredCommands = commands.filter((cmd) =>
@@ -102,17 +102,17 @@ export default function CommandPalette({ isOpen, onClose, onToggleTheme }) {
     >
       <div className="command-dialog__inner">
         <div className="command-dialog__header">
-          <span className="command-dialog__search-icon" aria-hidden="true">⌕</span>
+          <Icon name="search" size={18} className="command-dialog__search-icon" />
           <input
             ref={inputRef}
             type="search"
             className="command-dialog__input"
-            placeholder="Type a command or search sections, actions, links…"
+            placeholder="Search sections, actions and links…"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setSelectedIndex(0) }}
             onKeyDown={handleKeyDown}
           />
-          <kbd className="command-dialog__esc" onClick={handleClose}>ESC</kbd>
+          <kbd className="command-dialog__esc" onClick={handleClose}>Esc</kbd>
         </div>
 
         <div className="command-dialog__list" role="listbox">
@@ -127,20 +127,19 @@ export default function CommandPalette({ isOpen, onClose, onToggleTheme }) {
                 onClick={cmd.action}
                 onMouseEnter={() => setSelectedIndex(idx)}
               >
-                <span className="command-item__icon" aria-hidden="true">{cmd.icon}</span>
                 <span className="command-item__title">{cmd.title}</span>
                 <span className="command-item__category">{cmd.category}</span>
               </button>
             ))
           ) : (
-            <p className="command-dialog__empty">No matching commands found.</p>
+            <p className="command-dialog__empty">No results.</p>
           )}
         </div>
 
         <div className="command-dialog__footer">
-          <span><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
-          <span><kbd>↵</kbd> to select</span>
-          <span><kbd>ESC</kbd> to close</span>
+          <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+          <span><kbd>Enter</kbd> select</span>
+          <span><kbd>Esc</kbd> close</span>
         </div>
       </div>
     </dialog>

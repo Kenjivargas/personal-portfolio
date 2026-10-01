@@ -1,22 +1,32 @@
-import Card from '../../../shared/components/ui/Card.jsx'
 import Section from '../../../shared/components/ui/Section.jsx'
-import { experienceEntries } from '../services/staticContent.js'
+import Timeline from './Timeline.jsx'
+import { experienceEntries, educationEntries } from '../services/staticContent.js'
 
 export default function ExperienceSection() {
   return (
-    <Section id="experience" eyebrow="04 / JOURNEY" title="Experience">
-      {experienceEntries.length ? (
-        <div className="timeline">
-          {experienceEntries.map((entry) => (
-            <Card key={entry.id} className="timeline__item">
-              <p className="timeline__period">{entry.period}</p>
-              <h3>{entry.role}</h3>
-              <p>{entry.organization}</p>
-              {entry.description && <p>{entry.description}</p>}
-            </Card>
-          ))}
-        </div>
-      ) : <Card className="empty-state empty-state--compact"><p>Experience details will appear here once verified.</p></Card>}
+    <Section id="experience" index="04" eyebrow="Experience" title="Where I've been">
+      <Timeline
+        label="Work"
+        emptyText="Experience details will appear here soon."
+        entries={experienceEntries.map((entry) => ({
+          id: entry.id,
+          period: entry.period,
+          title: entry.role,
+          subtitle: entry.organization,
+          description: entry.description,
+        }))}
+      />
+      <Timeline
+        label="Education"
+        emptyText="Education details will appear here soon."
+        entries={educationEntries.map((entry) => ({
+          id: entry.id,
+          period: entry.period,
+          title: entry.program,
+          subtitle: entry.institution,
+          description: entry.description,
+        }))}
+      />
     </Section>
   )
 }
