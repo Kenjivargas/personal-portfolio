@@ -1,4 +1,5 @@
-#root { min-height: 100vh; }
+#root { min-height: 100vh; position: relative; }
+main { position: relative; z-index: 1; }
 
 .container { width: min(100% - 2.5rem, 1160px); margin-inline: auto; }
 .skip-link { position: fixed; z-index: 30; top: -5rem; left: 1rem; padding: .75rem 1rem; background: var(--primary); color: var(--primary-foreground); border-radius: .75rem; }
@@ -1044,26 +1045,25 @@ dialog::backdrop {
    ========================================================================== */
 
 :root {
-  --grid-line-color: rgba(0, 0, 0, 0.05);
-  --grid-dot-color: rgba(0, 0, 0, 0.12);
-  --grid-beam-glow: rgba(0, 0, 0, 0.035);
-  --grid-spotlight-glow: rgba(0, 0, 0, 0.04);
+  --grid-line-color: rgba(0, 0, 0, 0.075);
+  --grid-dot-color: rgba(0, 0, 0, 0.22);
+  --grid-beam-glow: rgba(0, 0, 0, 0.055);
+  --grid-spotlight-glow: rgba(0, 0, 0, 0.065);
 }
 
 :root[data-theme='dark'] {
-  --grid-line-color: rgba(255, 255, 255, 0.038);
-  --grid-dot-color: rgba(255, 255, 255, 0.14);
-  --grid-beam-glow: rgba(255, 255, 255, 0.045);
-  --grid-spotlight-glow: rgba(255, 255, 255, 0.07);
+  --grid-line-color: rgba(255, 255, 255, 0.075);
+  --grid-dot-color: rgba(255, 255, 255, 0.26);
+  --grid-beam-glow: rgba(255, 255, 255, 0.08);
+  --grid-spotlight-glow: rgba(255, 255, 255, 0.11);
 }
 
 .animated-grid-bg {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  contain: strict;
 }
 
 /* Layer 1: Blueprint Grid Lines */
@@ -1073,30 +1073,27 @@ dialog::backdrop {
   background-image: 
     linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
-  background-size: 52px 52px;
-  mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, black 40%, transparent 95%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 30%, black 40%, transparent 95%);
+  background-size: 48px 48px;
 }
 
 /* Layer 2: Dot Matrix Cross-points */
 .animated-grid-bg__dots {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(var(--grid-dot-color) 1.25px, transparent 1.25px);
-  background-size: 52px 52px;
+  background-image: radial-gradient(var(--grid-dot-color) 1.5px, transparent 1.5px);
+  background-size: 48px 48px;
   background-position: -1px -1px;
-  opacity: 0.85;
 }
 
 /* Layer 3: Slowly Drifting Ambient Light Beam */
 .animated-grid-bg__beam {
   position: absolute;
-  top: -20%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
-  background: radial-gradient(ellipse 55% 45% at 50% 45%, var(--grid-beam-glow), transparent 65%);
-  animation: beam-drift 24s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(ellipse 60% 50% at 50% 50%, var(--grid-beam-glow), transparent 60%);
+  animation: beam-drift 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
   will-change: transform;
 }
 
@@ -1105,10 +1102,10 @@ dialog::backdrop {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(6vw, 12vh, 0) scale(1.1);
+    transform: translate3d(8vw, 15vh, 0) scale(1.15);
   }
   100% {
-    transform: translate3d(-6vw, -8vh, 0) scale(0.95);
+    transform: translate3d(-8vw, -10vh, 0) scale(0.95);
   }
 }
 
@@ -1117,18 +1114,17 @@ dialog::backdrop {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    circle 540px at var(--cursor-x, 50vw) var(--cursor-y, 30vh),
+    circle 500px at var(--cursor-x, 50vw) var(--cursor-y, 30vh),
     var(--grid-spotlight-glow),
-    transparent 75%
+    transparent 70%
   );
-  transition: opacity var(--motion-base) ease;
 }
 
 /* Layer 5: Edge Vignette */
 .animated-grid-bg__vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 40%, var(--background) 98%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 60%, var(--background) 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1139,5 +1135,6 @@ dialog::backdrop {
     display: none !important;
   }
 }
+
 
 
